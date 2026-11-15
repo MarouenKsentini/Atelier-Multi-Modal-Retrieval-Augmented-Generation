@@ -1,0 +1,14 @@
+# Environnement
+.venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Secrets
+.env
+
+# Base vectorielle (reconstruite par index.py)
+chroma_image_db/
+
+# Streamlit
+.streamlit/secrets.toml

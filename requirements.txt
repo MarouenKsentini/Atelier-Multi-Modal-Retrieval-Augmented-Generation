@@ -1,0 +1,9 @@
+streamlit
+pillow
+chromadb
+open-clip-torch
+langchain
+langchain-core
+langchain-openai
+langchain-google-genai
+python-dotenv
