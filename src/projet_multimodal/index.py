@@ -89,13 +89,15 @@ def index_images() -> int:
 # =========================================================
 # RECHERCHE (retriever)
 # =========================================================
-def search_images(query: str, n_results: int = 9) -> dict:
+DEFAULT_N_RESULTS = 9  # nombre d'images renvoyées par défaut (réglable dans l'interface)
+
+
+def search_images(query: str, n_results: int = DEFAULT_N_RESULTS) -> dict:
     """Question → embedding CLIP → images les plus proches.
 
     ChromaDB renvoie une liste de résultats par requête, d'où les [0] à la lecture.
     """
     return get_chroma_collection().query(
-      
         query_embeddings=[embed_text(query)],
         n_results=n_results,
         include=["metadatas", "distances"],

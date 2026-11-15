@@ -49,8 +49,8 @@ sans aucune annotation ni étiquette sur les photos.
   dans un espace joint texte/image (CLIP).
 - 🖼️ **Indexation incrémentale** : seules les nouvelles images sont encodées, les
   précédentes ne sont pas recalculées (identifiants stables `img_<nom_du_fichier>`).
-- 🎛️ **Nombre de résultats réglable** : 3 par défaut, jusqu'à **toutes** les images
-  indexées (curseur dans la barre latérale).
+- 🎛️ **Nombre de résultats réglable** : 9 par défaut (`DEFAULT_N_RESULTS` dans `index.py`),
+  jusqu'à **toutes** les images indexées (curseur dans la barre latérale).
 - 🧠 **Deux VLM gratuits au choix** : Nemotron VL (OpenRouter) ou Gemma 4 (Google AI
   Studio), sélectionnables à chaud dans la barre latérale.
 - 🔁 **Réindexation en un clic** : bouton « Réindexer les images » dans l'interface.
@@ -203,7 +203,8 @@ Ouvrir ensuite **http://localhost:8501** (`--server.port 8502` si le port est d�
 Dans la barre latérale :
 
 - **Modèle multimodal** — bascule entre Nemotron et Gemma 4 ;
-- **Nombre d'images à retrouver** — de 1 à toutes les images indexées (3 par défaut) ;
+- **Nombre d'images à retrouver** — de 1 à toutes les images indexées (9 par défaut,
+  `DEFAULT_N_RESULTS`) ;
 - **🔄 Réindexer les images** — ajoute uniquement les nouvelles images du dossier.
 
 Puis saisir une question, par exemple :
@@ -348,7 +349,7 @@ plutôt que sport.
   changer de modèle dans la barre latérale.
 - **Chaque image envoyée coûte des tokens.** Demander « toutes les images » est pratique
   pour parcourir la base, mais très coûteux (et souvent refusé) côté VLM : garder un
-  `top-k` raisonnable (3 à 6) pour la génération.
+  `top-k` raisonnable (3 à 9) pour la génération.
 - **ChromaDB renvoie des listes imbriquées** : toujours lire `[0]`.
 - **Chemins absolus en métadonnées** : si le dossier du projet est déplacé, les chemins
   stockés deviennent invalides → supprimer `chroma_image_db/` et réindexer.

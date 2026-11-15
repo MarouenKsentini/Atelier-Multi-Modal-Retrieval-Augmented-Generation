@@ -18,7 +18,13 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_openai import ChatOpenAI
 
 sys.path.insert(0, str(Path(__file__).parent))  # pour importer index.py voisin
-from index import PROJECT_ROOT, get_chroma_collection, index_images, search_images  # noqa: E402
+from index import (  # noqa: E402
+    DEFAULT_N_RESULTS,
+    PROJECT_ROOT,
+    get_chroma_collection,
+    index_images,
+    search_images,
+)
 
 # =========================================================
 # CONFIGURATION
@@ -98,14 +104,14 @@ def main():
 
         st.divider()
         st.header("Recherche")
-        # search_images(..., n_results=3) par défaut → ici on peut aller jusqu'à toutes les images
+        # search_images(..., n_results=DEFAULT_N_RESULTS) par défaut → ici on peut aller jusqu'à toutes
         max_images = max(1, total_images)
         n_images = st.slider(
             "Nombre d'images à retrouver",
             min_value=1,
             max_value=max_images,
-            value=min(3, max_images),
-            help="3 par défaut. Monte le curseur jusqu'au maximum pour retrouver toutes les images indexées.",
+            value=min(DEFAULT_N_RESULTS, max_images),
+            help="Monte le curseur jusqu'au maximum pour retrouver toutes les images indexées.",
         )
         st.caption(f"{total_images} images indexées")
         st.caption("⚠️ Plus tu envoies d'images au modèle, plus la réponse est lente (et limitée en tokens).")
