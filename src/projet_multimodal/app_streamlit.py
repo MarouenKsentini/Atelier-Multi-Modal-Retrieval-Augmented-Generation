@@ -56,6 +56,15 @@ def init_index():
 # =========================================================
 # APPEL DU MODÈLE MULTIMODAL
 # =========================================================
+# Type MIME réel de l'image : le dossier mélange .jpg, .jpeg, .png et .webp
+MIME_TYPES = {
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".png": "image/png",
+    ".webp": "image/webp",
+}
+
+
 def encode_image(path: str) -> str:
     with open(path, "rb") as f:  # rb : read binary
         return base64.b64encode(f.read()).decode("utf-8")
@@ -64,10 +73,11 @@ def encode_image(path: str) -> str:
 def ask_llm(user_question: str, image_paths: list[str], provider: str, model_id: str) -> str:
     content = [{"type": "text", "text": user_question}]
     for path in image_paths:
+        mime = MIME_TYPES.get(Path(path).suffix.lower(), "image/jpeg")
         content.append(  # image en base64 dans une URL "data:"
             {
                 "type": "image_url",
-                "image_url": {"url": f"data:image/jpeg;base64,{encode_image(path)}"},
+                "image_url": {"url": f"data:{mime};base64,{encode_image(path)}"},
             }
         )
     return load_llm(provider, model_id).invoke([HumanMessage(content=content)]).text

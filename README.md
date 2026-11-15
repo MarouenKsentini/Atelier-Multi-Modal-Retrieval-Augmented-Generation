@@ -297,13 +297,16 @@ OpenRouter expose une API **compatible OpenAI**, d'où `ChatOpenAI` + `base_url`
 dans le dictionnaire `MODELS` (`nom affiché → (fournisseur, identifiant)`).
 
 **Message multimodal** : les images sont lues en binaire, encodées en base64 et injectées
-dans une URL `data:` ; le message contient le texte de la question puis les images :
+dans une URL `data:` dont le type MIME suit l'extension réelle du fichier (le dossier
+mélange `.jpg`, `.jpeg`, `.png`, `.webp`) ; le message contient le texte de la question
+puis les images :
 
 ```python
 content = [{"type": "text", "text": user_question}]
 for path in image_paths:
+    mime = MIME_TYPES.get(Path(path).suffix.lower(), "image/jpeg")
     content.append({"type": "image_url",
-                    "image_url": {"url": f"data:image/jpeg;base64,{encode_image(path)}"}})
+                    "image_url": {"url": f"data:{mime};base64,{encode_image(path)}"}})
 return load_llm(provider, model_id).invoke([HumanMessage(content=content)]).text
 ```
 
